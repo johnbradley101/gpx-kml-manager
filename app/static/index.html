@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GPX &amp; KML Manager</title>
+  <link rel="stylesheet" href="/static/vendor/leaflet/leaflet.css">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div id="app">
+  <aside id="sidebar">
+    <h1>GPX &amp; KML Manager</h1>
+
+    <div id="dropzone">
+      <button id="btn-upload" class="primary">Import files…</button>
+      <input type="file" id="file-input" multiple accept=".gpx,.kml,.kmz" hidden>
+      <p class="hint">GPX, KML or KMZ. You can also drop files anywhere on this page.</p>
+    </div>
+
+    <ul id="file-list" aria-label="Library"></ul>
+
+    <div class="side-tools">
+      <div class="tool">
+        <label for="export-all-fmt">Export everything</label>
+        <div class="row">
+          <select id="export-all-fmt"><option value="gpx">GPX</option><option value="kml">KML</option></select>
+          <button id="btn-export-all">Download .zip</button>
+        </div>
+      </div>
+      <div class="tool">
+        <label for="convert-to">Quick convert (nothing is stored)</label>
+        <div class="row">
+          <select id="convert-to"><option value="gpx">to GPX</option><option value="kml">to KML</option></select>
+          <button id="btn-convert">Choose file…</button>
+          <input type="file" id="convert-input" accept=".gpx,.kml,.kmz" hidden>
+        </div>
+      </div>
+      <div class="tool">
+        <button id="btn-rescan" title="Re-read the library and inbox folders">Rescan folders</button>
+      </div>
+    </div>
+  </aside>
+
+  <main id="main">
+    <section id="empty">
+      <h2>No file open</h2>
+      <p>Import a GPX or KML file, or pick one from the library, to view and edit it on the map.</p>
+    </section>
+
+    <section id="editor" hidden>
+      <div id="titlebar">
+        <div class="titles">
+          <h2 id="file-title"></h2>
+          <div id="file-meta" class="meta"></div>
+        </div>
+        <div class="actions">
+          <button id="btn-rename">Rename</button>
+          <button id="btn-undo">Undo</button>
+          <a id="btn-gpx" class="btn" download>Export GPX</a>
+          <a id="btn-kml" class="btn" download>Export KML</a>
+          <button id="btn-delete-file" class="danger">Delete file</button>
+        </div>
+      </div>
+
+      <div id="map-wrap">
+        <div id="map"></div>
+        <div id="pick-hint" hidden></div>
+      </div>
+
+      <div id="selection-panel">
+        <div id="profile-wrap"><canvas id="profile"></canvas></div>
+
+        <div class="sliders">
+          <label><span class="pin a">A</span> Start <input type="range" id="sel-start" min="0" max="1" value="0"></label>
+          <output id="lbl-start"></output>
+          <label><span class="pin b">B</span> End <input type="range" id="sel-end" min="0" max="1" value="1"></label>
+          <output id="lbl-end"></output>
+        </div>
+
+        <div class="selection-actions">
+          <span id="sel-summary" class="meta"></span>
+          <span class="spacer"></span>
+          <button id="btn-pick-start">Set A on map</button>
+          <button id="btn-pick-end">Set B on map</button>
+          <button id="btn-select-all">Select all</button>
+        </div>
+        <div class="selection-actions">
+          <button id="btn-crop" class="primary" title="Keep only the part between A and B">Crop to A–B</button>
+          <button id="btn-del-split" title="Remove A–B; the rest becomes two tracks">Remove A–B (split in two)</button>
+          <button id="btn-del-join" title="Remove A–B and join the two ends with a straight line">Remove A–B (join ends)</button>
+          <button id="btn-split" title="Split the track in two at point A">Split at A</button>
+          <button id="btn-add-wpt" title="Click the map to add a waypoint">Add waypoint…</button>
+        </div>
+      </div>
+
+      <div id="lists">
+        <div>
+          <h3>Tracks</h3>
+          <ul id="track-list"></ul>
+        </div>
+        <div>
+          <h3>Waypoints</h3>
+          <ul id="wpt-list"></ul>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script src="/static/vendor/leaflet/leaflet.js"></script>
+<script src="/static/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+services:
+  gpx-kml-manager:
+    build: .
+    image: gpx-kml-manager:latest
+    container_name: gpx-kml-manager
+    restart: unless-stopped
+    ports:
+      - "8080:8080"          # change the left number if 8080 is already used on your NAS
+    environment:
+      TZ: Europe/London
+      MAX_UPLOAD_MB: "50"
+      # Optional login (HTTP basic auth). Enabled only when BOTH are set.
+      APP_USER: ""
+      APP_PASSWORD: ""
+    volumes:
+      - ./data:/data         # library/, inbox/, originals/, history/ and index.db live here
