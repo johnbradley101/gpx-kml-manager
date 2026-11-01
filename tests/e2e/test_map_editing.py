@@ -1,5 +1,7 @@
 from pathlib import Path
 
+from playwright.sync_api import expect
+
 SAMPLE = Path(__file__).resolve().parents[1] / "fixtures" / "sample.gpx"  # 20 points, point i at lat 51+0.001*i
 
 
@@ -48,7 +50,7 @@ def test_pick_ab_on_map_then_crop_and_undo(page, base_url):
     x, y = screen_xy(page, 14)
     page.mouse.click(x, y)
     assert sel(page) == [5, 14]
-    assert "10 points" in page.inner_text("#sel-summary")
+    expect(page.locator("#sel-summary")).to_contain_text("10 points")
     assert page.locator("#btn-crop").is_enabled()
 
     page.click("#btn-crop")
@@ -80,7 +82,7 @@ def test_drag_a_pin_moves_selection(page, base_url):
 
     page.wait_for_function("state.selStart === 8")
     assert sel(page) == [8, 14]
-    assert "7 points" in page.inner_text("#sel-summary")
+    expect(page.locator("#sel-summary")).to_contain_text("7 points")
     assert page.errors == []
 
 
