@@ -1,6 +1,9 @@
 from pathlib import Path
 
-from playwright.sync_api import expect
+import pytest
+
+pytest.importorskip("playwright", reason="browser tests need playwright (pip install -r requirements-dev.txt)")
+from playwright.sync_api import expect  # noqa: E402
 
 SAMPLE = Path(__file__).resolve().parents[1] / "fixtures" / "sample.gpx"  # 20 points, point i at lat 51+0.001*i
 

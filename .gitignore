@@ -6,3 +6,5 @@ data/
 app/static/vendor/
 node_modules/
 *.tar
+# written by the browser tests when one fails
+tests/e2e/screenshots/
