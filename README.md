@@ -91,16 +91,16 @@ Back up the `data` folder (e.g. with Hyper Backup). If you delete a file from `l
 ## Development
 
 ```bash
-pip install -r requirements.txt pytest
-python -m pytest -q tests/test_app.py    # backend tests
+pip install -r requirements-dev.txt
+python -m pytest -q --ignore=tests/e2e    # backend tests (about 10 seconds)
 # Leaflet is fetched during the Docker build. To run locally, fetch it once:
 npm pack leaflet@1.9.4 && tar xzf leaflet-1.9.4.tgz
 mkdir -p app/static/vendor/leaflet && cp -r package/dist/{leaflet.js,leaflet.css,images} app/static/vendor/leaflet/
 DATA_DIR=./data uvicorn app.main:app --port 8080
 
 # browser tests (need Leaflet from the step above)
-pip install playwright && playwright install chromium
+playwright install chromium    # playwright itself comes from requirements-dev.txt
 python -m pytest -q tests/e2e
 ```
 
-GitHub Actions (`.github/workflows/ci.yml`) runs the backend tests, the browser tests, then builds the image for amd64 and arm64, smoke-tests the running container and, on `main` and `v*` tags, pushes it to GHCR.
+GitHub Actions (`.github/workflows/ci.yml`) runs the backend tests (on amd64 and arm64), the browser tests, then builds the image, smoke-tests the running container on both CPU types and, on `main` and `v*` tags, pushes a multi-arch image to GHCR.

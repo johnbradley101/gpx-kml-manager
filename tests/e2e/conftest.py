@@ -18,12 +18,6 @@ SHOTS = Path(__file__).resolve().parent / "screenshots"
 LEAFLET = ROOT / "app" / "static" / "vendor" / "leaflet" / "leaflet.js"
 
 
-@pytest.hookimpl(hookwrapper=True, tryfirst=True)
-def pytest_runtest_makereport(item, call):
-    outcome = yield
-    setattr(item, "rep_" + call.when, outcome.get_result())
-
-
 @pytest.fixture(scope="session")
 def base_url(tmp_path_factory):
     if not LEAFLET.exists():
